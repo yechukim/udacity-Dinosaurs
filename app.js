@@ -6,38 +6,44 @@ function Dino(dino) {
     this.diet = dino.diet,
     this.where = dino.where,
     this.when = dino.when,
-    this.fact = dino.fact,
-    this.imgSrc = `/images/${dino.species.toLowerCase()}.png`
+    this.fact = dino.fact
 }
+
+const getImg = function (kind) {
+  return `/images/${kind.toLowerCase()}.png`
+}
+
+// Dino.prototype.img = getImg(kind)
+// human.prototype.img = getImg(kind)
 
 // Create Dino Objects
 let dinosArray = []
-let singleDino
+
 fetch('dino.json')
   .then(res => res.json())
   .then(dinos =>
-    dinos['Dinos'].map(dino =>
-      dinosArray.push(new Dino(dino))
-
-    ))
+    dinos['Dinos'].map(dino => dinosArray.push(new Dino(dino))))
 
 // Create Human Object
-let human = {}
+let humanData = {}
+humanData = (function () {
 
-// Use IIFE to get human data from form
+  return function () {
+    const name = getValue('name')
+    const feet = getValue('feet')
+    const inches = getValue('inches')
+    const weight = getValue('weight')
+    const diet = getValue('diet')
 
-function getValue(id) {
-  return document.getElementById(id).value
-
-}
-const human = (function () {
-  const name = getValue('name')
-  const feet = getValue('feet')
-  const inches = getValue('inches')
-  const weight = getValue('weight')
-  const diet = getValue('diet')
+    return { name, feet, inches, weight, diet }
+  }
 
 }())
+// Use IIFE to get human data from form
+function getValue(id) {
+  return document.getElementById(id).value
+}
+
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches. 
@@ -73,5 +79,6 @@ const form = document.getElementById('form-container')
 const btn = document.getElementById('btn')
 btn.addEventListener('click', () => {
   console.log(dinosArray)
+  console.log(humanData())
 
 })
