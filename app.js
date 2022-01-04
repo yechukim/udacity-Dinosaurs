@@ -6,26 +6,29 @@ function Dino(dino) {
     this.diet = dino.diet,
     this.where = dino.where,
     this.when = dino.when,
-    this.fact = dino.fact
+    this.fact = dino.fact,
+    this.img = `/images/${dino.species.toLowerCase()}.png`
 }
+Dino.prototype.getWhere = getWhere()
+Dino.prototype.getDiet = getDiet()
+Dino.prototype.getWeight = getWeight()
 
-const getImg = function (kind) {
-  return `/images/${kind.toLowerCase()}.png`
-}
-
-// Dino.prototype.img = getImg(kind)
-// human.prototype.img = getImg(kind)
 
 // Create Dino Objects
 let dinosArray = []
+async function createDinos() {
+  const res = await fetch('dino.json')
+    .then(res => res.json())
+    .then(dinos =>
+      dinos['Dinos'].map(dino => new Dino(dino)
+      ))
+  dinosArray.push(res)
+}
 
-fetch('dino.json')
-  .then(res => res.json())
-  .then(dinos =>
-    dinos['Dinos'].map(dino => dinosArray.push(new Dino(dino))))
 
 // Create Human Object
 let humanData = {}
+// Use IIFE to get human data from form
 humanData = (function () {
 
   return function () {
@@ -35,11 +38,22 @@ humanData = (function () {
     const weight = getValue('weight')
     const diet = getValue('diet')
 
-    return { name, feet, inches, weight, diet }
+    return {
+      name,
+      feet,
+      inches,
+      weight,
+      diet,
+      img: `/images/human.png`
+    }
   }
 
 }())
-// Use IIFE to get human data from form
+
+humanData.prototype.getWhere = getWhere()
+humanData.prototype.getDiet = getDiet()
+humanData.prototype.getWeight = getWeight()
+
 function getValue(id) {
   return document.getElementById(id).value
 }
@@ -47,38 +61,57 @@ function getValue(id) {
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches. 
-function compareDiet(human, dino) {
-  if (human.diet === dino.diet)
-    return dino.species
+function getWhere(kind) {
+  if (kind === typeof (Dino)) return kind.fact
+  return 'humans are from earth'
 }
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
-function compareWeight(human, dino) {
-
+function getDiet(kind) {
+  //return kind.diet
 }
-
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
-function getPigeonFact() {
-
+function getWeight(kind) {
+  //return kind.weight
+}
+// Generate Tiles for each Dino in Array
+function makeTile(dino) {
+  return (
+    `<div id='grid-item'>
+  <img src=${dino.img}/>
+  <p>${dino.species}</p>
+  <p>${dino.fact}</p>
+  </div>`
+  )
 }
 
-// Generate Tiles for each Dino in Array
-const tile = `<div></div>`
 // Add tiles to DOM
 
 const grid = document.getElementById('grid')
+let gridItem
+
+function addTiles() {
+  console.log(dinosArray)
+  dinosArray.map(dino => {
+    gridItem = makeTile(dino)
+    grid.append(gridItem)
+
+    console.log(gridItem)
+  }
+  )
+
+}
 
 // Remove form from screen
-const form = document.getElementById('form-container')
-
+const form = document.querySelector('.form-container')
 
 // On button click, prepare and display infographic
 const btn = document.getElementById('btn')
 btn.addEventListener('click', () => {
-  console.log(dinosArray)
-  console.log(humanData())
+  form.style.display = 'none'
+  createDinos()
 
 })
