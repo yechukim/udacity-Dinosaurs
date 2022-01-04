@@ -1,18 +1,13 @@
 // Create Dino Constructor
 function Dino(dino) {
-  this.species = dino.species,
-    this.height = dino.height,
-    this.weight = dino.weight,
-    this.diet = dino.diet,
+  this.weight = dino.wieght,
     this.where = dino.where,
     this.when = dino.when,
+    this.height = dino.height,
     this.fact = dino.fact,
+    this.species = dino.species,
     this.img = `/images/${dino.species.toLowerCase()}.png`
 }
-Dino.prototype.getWhere = getWhere()
-Dino.prototype.getDiet = getDiet()
-Dino.prototype.getWeight = getWeight()
-
 
 // Create Dino Objects
 let dinosArray = []
@@ -22,7 +17,8 @@ async function createDinos() {
     .then(dinos =>
       dinos['Dinos'].map(dino => new Dino(dino)
       ))
-  dinosArray.push(res)
+  dinosArray = res
+  makeTile(dinosArray)
 }
 
 
@@ -50,10 +46,6 @@ humanData = (function () {
 
 }())
 
-humanData.prototype.getWhere = getWhere()
-humanData.prototype.getDiet = getDiet()
-humanData.prototype.getWeight = getWeight()
-
 function getValue(id) {
   return document.getElementById(id).value
 }
@@ -61,31 +53,33 @@ function getValue(id) {
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches. 
-function getWhere(kind) {
-  if (kind === typeof (Dino)) return kind.fact
-  return 'humans are from earth'
-}
+
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
-function getDiet(kind) {
-  //return kind.diet
-}
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
-function getWeight(kind) {
-  //return kind.weight
-}
+
+
 // Generate Tiles for each Dino in Array
-function makeTile(dino) {
-  return (
-    `<div id='grid-item'>
-  <img src=${dino.img}/>
-  <p>${dino.species}</p>
-  <p>${dino.fact}</p>
-  </div>`
+let dinoTiles = []
+function makeTile(dinos) {
+
+  dinos.map(dino =>
+  //console.log(dino)
+  {
+    const tile =
+      `<div id="grid-item">
+        <h3>${dino.species}</h3>
+        <img src=${dino.img} />
+        <p>${dino.fact}</p>
+      </div>`
+    dinoTiles.push(tile)
+  }
   )
+  console.log(dinoTiles)
+  addTiles(dinoTiles)
 }
 
 // Add tiles to DOM
@@ -93,25 +87,23 @@ function makeTile(dino) {
 const grid = document.getElementById('grid')
 let gridItem
 
-function addTiles() {
-  console.log(dinosArray)
-  dinosArray.map(dino => {
-    gridItem = makeTile(dino)
-    grid.append(gridItem)
+function addTiles(tiles) {
 
-    console.log(gridItem)
-  }
-  )
+  tiles.map(tile => grid.innerHTML += tile)
 
 }
 
 // Remove form from screen
-const form = document.querySelector('.form-container')
+function hideForm() {
+  const form = document.querySelector('.form-container')
+  form.style.display = 'none'
+}
 
 // On button click, prepare and display infographic
 const btn = document.getElementById('btn')
 btn.addEventListener('click', () => {
-  form.style.display = 'none'
+  hideForm()
   createDinos()
+  humanData()
 
 })
