@@ -1,5 +1,6 @@
 // Create Dino Constructor
 function Dino(dino) {
+
   this.weight = dino.weight,
     this.where = dino.where,
     this.when = dino.when,
@@ -7,6 +8,11 @@ function Dino(dino) {
     this.fact = dino.fact,
     this.species = dino.species,
     this.img = `/images/${dino.species.toLowerCase()}.png`
+
+  if (dino.species === 'Tyrannosaurus Rex') {
+    const imgUrl = dino.species.toLowerCase().replace(/\s/g, '%20')
+    this.img = `/images/${imgUrl}.png`
+  }
 }
 
 // Create Dino Objects
@@ -60,6 +66,7 @@ Dino.prototype.compareDiet = function (dino) {
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
 Dino.prototype.compareWeight = function (dino) {
+  if (!humanData.weight)`${dino.species} is ${dino.weight} in lbs`
   if (humanData.weight < dino.weight) return `${dino.species} is heavier than you`
   return `${dino.species} is strong enough like you`
 }
@@ -83,7 +90,11 @@ function compareInches(dino, human) {
 }
 
 // get randomFacts
-function getRandom() {
+function getRandom(dino) {
+
+  const factsArray = [dino.when, dino.where, dino.fact, dino.compareWeight(dino), dino.compareHeight(dino), dino.compareDiet(dino)]
+  const random = Math.floor(Math.random() * 5)
+  return factsArray[random]
 
 }
 // Generate Tiles for each Dino in Array
@@ -91,7 +102,7 @@ let dinoTiles = []
 function makeTile(dinos) {
 
   dinos.map(dino => {
-    //human
+
     if (dino.constructor !== Dino) {
       const tile =
         `<div class="grid-item">
@@ -100,7 +111,7 @@ function makeTile(dinos) {
       </div>`
       dinoTiles.push(tile)
 
-    } else if (dino.species === 'Pigeon') {//pigeon
+    } else if (dino.species === 'Pigeon') {
       const tile =
         `<div class="grid-item">
       <h3>${dino.species}</h3>
@@ -114,7 +125,7 @@ function makeTile(dinos) {
         `<div class="grid-item">
         <h3>${dino.species}</h3>
         <img src=${dino.img} />
-        <p>${dino.fact}</p>
+        <p>${getRandom(dino)}</p>
       </div>`
       dinoTiles.push(tile)
     }
