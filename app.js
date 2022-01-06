@@ -59,25 +59,25 @@ function getValue(id) {
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches. 
 Dino.prototype.compareDiet = function (dino) {
-  if (humanData.diet === dino.diet) return `${dino.species} has a same taste with you!`
+  if (humanData().diet === dino.diet) return `${dino.species} has a same taste with you!`
   return `${dino.species} does not have a same taste with you!`
 }
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
 Dino.prototype.compareWeight = function (dino) {
-  if (!humanData.weight)`${dino.species} is ${dino.weight} in lbs`
-  if (humanData.weight < dino.weight) return `${dino.species} is heavier than you`
+  if (!humanData().weight) return `${dino.species} is ${dino.weight} in lbs, how about yours?`
+  if (humanData().weight < dino.weight) return `${dino.species} is heavier than you`
   return `${dino.species} is strong enough like you`
 }
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
 Dino.prototype.compareHeight = function (dino) {
-  if (humanData.feet) {
-    return compareInches(dino, humanData.feet)
+  if (humanData().feet) {
+    return compareInches(dino, humanData().feet)
   }
-  if (humanData.inches) {
-    return compareInches(dino, humanData.feet)
+  if (humanData().inches) {
+    return compareInches(dino, humanData().feet)
   }
   return `${dino.species} is ${dino.height} in inches`
 }
