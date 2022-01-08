@@ -137,7 +137,6 @@ function makeTile(dinos) {
 // Add tiles to DOM
 
 const grid = document.getElementById('grid')
-let gridItem
 
 function addTiles(tiles) {
   tiles.map(tile => grid.innerHTML += tile)
