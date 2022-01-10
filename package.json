@@ -1,5 +1,5 @@
 {
-  "name": "dino",
+  "name": "udacity-dinosaurs",
   "version": "1.0.0",
   "description": "# description",
   "main": "app.js",
@@ -17,8 +17,6 @@
   },
   "homepage": "https://github.com/Yechu0217/udacity-Dinosaurs#readme",
   "devDependencies": {
-    "eslint": "^8.6.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4"
+    "eslint": "^8.6.0"
   }
 }
